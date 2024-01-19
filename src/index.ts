@@ -8,23 +8,19 @@ import * as helmet from "helmet";
 import * as cors from "cors";
 import * as path from "path";
 
-// DigitalOcean Spaces uploader ======================================== !!
-
+// DigitalOcean Spaces uploader ========================================
 import { uploadMiddleware } from "./uploadMiddleware";
 
-// Main declarations =================================================== !!
-
+// Main declarations ===================================================
 const port = process.env.PORT || 3000;
 const app: express.Application = express();
 
-// Middleware ========================================================== !!
-
+// Middleware ==========================================================
 app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json());
 
-// Routes ============================================================== !!
-
+// Routes =============================================================
 app.use("/", express.static(path.join(__dirname, "./..", "public")));
 
 app.get("/test", (req: Request, res: Response) => {
@@ -32,16 +28,13 @@ app.get("/test", (req: Request, res: Response) => {
 });
 
 app.post("/upload", uploadMiddleware, (req: Request, res: Response) => {
-  const uploadData = {
-    timestamp: Date.now().toString(),
-    files: req.files
-  };
-  console.log(uploadData);
-  res.json(uploadData);
+  const fileLinks = req.files.map((file: any) => file.location);
+
+  // Response with only file links
+  res.json(fileLinks);
 });
 
-// Start Server ======================================================== !!
-
+// Start Server ========================================================
 app.listen(port, function() {
   console.log(`Server listening on port http://localhost:${port}`);
 });

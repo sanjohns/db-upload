@@ -15,18 +15,18 @@ export const uploadMiddleware = multer({
   },
   storage: multerS3({
     s3: new aws.S3({
-      accessKeyId: process.env.DO_SPACES_KEY || null,
-      secretAccessKey: process.env.DO_SPACES_SECRET || null,
-      endpoint: process.env.DO_SPACES_ENDPOINT || null,
+      accessKeyId: "DO004ACRW6PDYDKVFDGY" || null,
+      secretAccessKey: "awkT9sJW7hdaBtjk11NqeN0xIHLMAWNhkVnr9HQPePY" || null,
+      endpoint: "https://sgp1.digitaloceanspaces.com" || null,
       signatureVersion: "v4"
     }),
-    bucket: process.env.DO_SPACES_BUCKET || null,
+    bucket: "dbflix" || null,
     contentType: multerS3.AUTO_CONTENT_TYPE,
     acl: "public-read",
     key: (req: Request, file, cb): any => {
       // save file to Spaces, you can use / to add folders directory
       const fileName = Date.now().toString(); //file.originalname;
-      cb(null, `test/${fileName}`);
+      cb(null, `videos/${fileName}`);
     }
   })
 }).array("upload", 1);
